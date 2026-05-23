@@ -1,0 +1,16 @@
+{
+  "name": "ai-agent-book",
+  "version": "1.0.0",
+  "description": "AI Agent 开发：从原理到生产 - 网页版",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "vitepress": "^1.5.0",
+    "vue": "^3.5.13"
+  }
+}
