@@ -26,12 +26,17 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22'
           cache: npm
           cache-dependency-path: ./package.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
+      - name: Enable Pages (if not enabled)
+        uses: actions/configure-pages@v4
+        with:
+          enablement: true
 
       - name: Install dependencies
         run: npm ci
