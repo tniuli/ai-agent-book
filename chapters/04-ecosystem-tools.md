@@ -8,9 +8,7 @@
 
 ## 4.1 工具链生态
 
-> ⚠️ 常见陷阱：MCP 与 Function Calling 的混淆与工具定义不一致。MCP 是 Agent 与外部工具交互的协议标准，Function Calling 是 LLM 调用工具的接口规范——两者层次不同，但初学者常把 MCP 等同于 Function Calling。另一个常见问题是工具的 JSON Schema 定义与实际函数签名不一致，导致 LLM 生成的参数无法正确传递。解决方案：明确 MCP（协议层）和 Function Calling（模型接口层）的分工；工具定义时用 Pydantic Model 自动生成 Schema，避免手写 JSON Schema 与代码脱节。
-
-Agent 只有"大脑"还不够，还需要"双手"来与外部世界交互。Function Calling 和 MCP 协议就是 Agent 操控外部工具的两双手。
+Agent 只有"大脑"还不够，还需要"双手"来与外部世界交互。Function Calling 和 MCP 协议就是 Agent 操控外部工具的两双手。这里需要先厘清一个容易混淆的概念：MCP（Model Context Protocol）是 Agent 与外部工具交互的**协议标准**，属于应用层；而 Function Calling 是 LLM 调用工具的**接口规范**，属于模型接口层——两者层次不同，初学者常把二者混为一谈。此外还有一个工程上容易被忽视的问题：工具的 JSON Schema 定义如果与实际函数签名不一致，LLM 生成的参数就无法正确传递到函数中。实践中建议用 Pydantic Model 自动生成 Schema，避免手写 JSON Schema 导致与代码脱节。
 
 ### 4.1.1 Function Calling：Agent 的第一双手
 

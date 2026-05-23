@@ -523,9 +523,7 @@ Deep Agents 构建在 LangGraph 之上——底层仍然是 State / Node / Edge 
 
 ## 12.5 实战
 
-> ⚠️ 常见陷阱：Agent 间信息丢失与死循环。多 Agent 协作中最常见的两个问题：一是下游 Agent 收不到上游 Agent 的完整输出——State 中的消息字段被覆盖而非追加，导致上下文断裂；二是 Supervisor 在 Agent 之间反复切换，形成"你来做→你来做→还是你来做"的死循环。解决方案：消息字段用 `operator.add` 注解实现追加而非覆盖；为 Supervisor 设置最大切换次数限制；在 Supervisor 的提示词中明确"当任务完成时必须输出 FINISH"。
-
-理论讲够了，现在动手。我们将用 LangGraph 构建一个软件开发团队——产品经理分析需求，程序员编写代码，测试工程师验证结果，Supervisor 协调整个流程。完整代码见 `software_team.py`。
+理论讲够了，现在动手。在动手之前有两个细节需要特别注意：一是 State 中的消息字段必须用 `add_messages`（即 `operator.add`）注解来实现追加语义，如果用了默认的覆盖策略，下游 Agent 就会收不到上游的完整输出，上下文直接断裂；二是 Supervisor 必须有退出机制——设置最大切换次数上限，同时在提示词里明确要求"任务完成时输出 FINISH"，否则很容易陷入 Agent 之间反复来回切换的死循环。这两个问题看似琐碎，却是多 Agent 协作中最常见的两类 Bug。我们将用 LangGraph 构建一个软件开发团队——产品经理分析需求，程序员编写代码，测试工程师验证结果，Supervisor 协调整个流程。完整代码见 `software_team.py`。
 
 ### 12.5.1 系统架构
 
