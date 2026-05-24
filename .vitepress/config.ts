@@ -25,7 +25,7 @@ export default defineConfig({
       {
         text: '📖 前言',
         items: [
-          { text: '本书简介', link: '/' }
+          { text: '本书简介', link: '/chapters/00-preface' }
         ]
       },
       {
