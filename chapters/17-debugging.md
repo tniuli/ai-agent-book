@@ -645,27 +645,29 @@ class CostMonitor:
 
 当你面对一个 Agent 问题时，可以按照以下决策树逐步排查：
 
+Problem Diagnosis Decision Tree（问题定位决策树）：
+
 ```
-Agent 行为异常
+Agent Behavior Abnormal
 │
-├─ 查看输出结果
-│  ├─ 格式错误 → 提示词问题（输出格式约束不够）
-│  ├─ 内容错误 → 继续排查
-│  └─ 无输出/报错 → 检查工具是否正常
+├─ Check Output
+│  ├─ Format Error → Prompt Issue (Output format constraint insufficient)
+│  ├─ Content Error → Continue
+│  └─ No Output/Error → Check if Tools are working
 │
-├─ 查看 Run 树
-│  ├─ 步骤数过多 → 架构问题（死循环或低效路径）
-│  ├─ 选错工具 → 提示词问题（工具选择指导不够）
-│  └─ 工具结果异常 → 工具问题
+├─ Check Run Tree
+│  ├─ Too Many Steps → Architecture Issue (Dead loop or inefficient path)
+│  ├─ Wrong Tool Selected → Prompt Issue (Tool selection guidance weak)
+│  └─ Tool Result Anomaly → Tool Issue
 │
-├─ 检查 LLM 的输入（Prompt）
-│  ├─ Prompt 正确但输出错误 → 模型问题
-│  ├─ Prompt 缺少关键信息 → 提示词问题
-│  └─ Prompt 包含错误信息 → 上游步骤问题
+├─ Check LLM Input (Prompt)
+│  ├─ Prompt Correct but Output Wrong → Model Issue
+│  ├─ Prompt Missing Key Info → Prompt Issue
+│  └─ Prompt Contains Wrong Info → Upstream Step Issue
 │
-└─ 对比不同模型
-   ├─ 所有模型都有问题 → 提示词或架构问题
-   └─ 只有特定模型有问题 → 模型问题
+└─ Compare Across Models
+   ├─ All Models Have Issues → Prompt or Architecture Issue
+   └─ Only Specific Model Has Issue → Model Issue
 ```
 
 这个决策树不是完美的，但它给出了一个系统的排查思路。记住古人说的"病来如山倒，病去如抽丝"——Agent 出问题往往很突然，但定位问题需要逐步排查，不能急躁。
@@ -678,26 +680,28 @@ Agent 行为异常
 
 ### 17.7.1 系统架构
 
+AgentTracer Architecture（追踪系统架构）：
+
 ```
-用户请求
+User Request
    │
    ▼
 ┌─────────────────┐
-│  AgentTracer     │ ← 统一追踪入口
+│  AgentTracer     │ ← Unified Trace Entry
 │  ┌─────────────┐ │
-│  │ LogStore    │ │ ← 日志存储（JSON 文件）
+│  │ LogStore    │ │ ← Log Storage (JSON File)
 │  ├─────────────┤ │
-│  │ CostMonitor │ │ ← 成本监控
+│  │ CostMonitor │ │ ← Cost Monitoring
 │  ├─────────────┤ │
-│  │ ReplayEngine│ │ ← 回放引擎
+│  │ ReplayEngine│ │ ← Replay Engine
 │  └─────────────┘ │
 └─────────────────┘
    │
    ▼
-  Agent 执行
+ Agent Execution
    │
    ▼
- 追踪报告
+Trace Report
 ```
 
 ### 17.7.2 完整代码
