@@ -17,7 +17,7 @@ export default defineConfig({
       { text: '开始阅读', link: '/chapters/01-overview' },
       {
         text: 'GitHub',
-        link: 'https://github.com/hanqing/ai-agent-book'
+        link: 'https://github.com/tniuli/ai-agent-book'
       }
     ],
 
@@ -88,7 +88,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/hanqing/ai-agent-book' }
+      { icon: 'github', link: 'https://github.com/tniuli/ai-agent-book' }
     ],
 
     footer: {
@@ -96,7 +96,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/hanqing/ai-agent-book/edit/main/books/ai-agent/chapters/:path',
+      pattern: 'https://github.com/tniuli/ai-agent-book/edit/main/books/ai-agent/chapters/:path',
       text: '在 GitHub 上编辑此页'
     },
 
