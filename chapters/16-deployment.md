@@ -674,15 +674,7 @@ class ABTestRouter:
 
 A/B 测试不是一次性的，它应该融入持续改进的闭环：
 
-```mermaid
-flowchart LR
-    A["发现问题"] --> B["设计实验"]
-    B --> C["分流运行"]
-    C --> D["收集数据"]
-    D --> E["分析结果"]
-    E --> F["决策上线"]
-    F -->|发现新问题| A
-```
+![ch16-mermaid-01.png](../assets/images/ch16-mermaid-01.png)
 
 > **关键指标**：任务完成率、用户满意度、平均交互轮数、成本效率——四个指标共同衡量改进效果，单一指标容易产生误导。
 
@@ -740,20 +732,7 @@ jobs:
 
 ### 16.6.1 项目结构
 
-```mermaid
-flowchart TD
-    Root["ch16/"] --> App["app.py<br/>FastAPI 主应用"]
-    Root --> Agent["agent/"]
-    Root --> Req["requirements.txt"]
-    Root --> Docker["Dockerfile"]
-    Root --> Compose["docker-compose.yml"]
-
-    Agent --> Init["__init__.py"]
-    Agent --> Core["core.py<br/>Agent 核心逻辑"]
-    Agent --> Cache["cache.py<br/>缓存模块"]
-    Agent --> Router["model_router.py<br/>模型路由"]
-    Agent --> CtxMgr["context_manager.py<br/>上下文管理"]
-```
+![ch16-mermaid-02.png](../assets/images/ch16-mermaid-02.png)
 
 > **模块职责划分**：`core.py` 封装 LLM 调用和工具执行；`cache.py` 实现精确缓存 + 语义缓存双层策略；`model_router.py` 按任务复杂度路由到不同模型；`context_manager.py` 管理对话上下文和自动摘要压缩。
 

@@ -380,11 +380,7 @@ response = client.chat.completions.create(
 
 LangChain 提供了三种定义工具的方式，适用于不同复杂度的场景：
 
-```mermaid
-flowchart TD
-    A["@tool 装饰器<br/>最简单，适合快速原型"] --> B["BaseTool 继承<br/>最灵活，适合复杂逻辑"]
-    B --> C["StructuredTool<br/>最精确，适合需要精细控制参数的场景"]
-```
+![ch08-mermaid-01.png](../assets/images/ch08-mermaid-01.png)
 
 **方式一：`@tool` 装饰器**
 
@@ -674,19 +670,7 @@ sql_tool = QuerySQLDataBaseTool(db=db)
 
 MCP 采用经典的客户端-服务端架构：
 
-```mermaid
-flowchart LR
-    subgraph Host["MCP Host（宿主）<br/>如：Claude Desktop"]
-        Client["MCP Client"]
-    end
-    subgraph Server["MCP Server（服务）"]
-        direction LR
-        T["Tools"]
-        R["Resources"]
-        P["Prompts"]
-    end
-    Client <-->|"MCP<br/>协议"| Server
-```
+![ch08-mermaid-02.png](../assets/images/ch08-mermaid-02.png)
 
 **核心概念**：
 
@@ -1073,33 +1057,15 @@ if __name__ == "__main__":
 
 **1. 串行链式模式**：工具 A 的输出作为工具 B 的输入
 
-```mermaid
-flowchart LR
-    A["用户提问"] --> B["查汇率"] --> C["计算金额"] --> D["格式化输出"] --> E["回答"]
-```
+![ch08-mermaid-03.png](../assets/images/ch08-mermaid-03.png)
 
 **2. 并行聚合模式**：多个工具同时执行，结果聚合
 
-```mermaid
-flowchart LR
-    A["用户提问"] --> B["查天气"]
-    A --> C["查航班"]
-    A --> D["查酒店"]
-    B --> E["综合分析"]
-    C --> E
-    D --> E
-    E --> F["回答"]
-```
+![ch08-mermaid-04.png](../assets/images/ch08-mermaid-04.png)
 
 **3. 条件路由模式**：根据中间结果决定调用哪个工具
 
-```mermaid
-flowchart LR
-    A["用户提问"] --> B["意图识别"]
-    B -->|"退货"| C["退款工具"]
-    B -->|"换货"| D["库存查询"] --> E["换货工具"]
-    B -->|"咨询"| F["知识库检索"]
-```
+![ch08-mermaid-05.png](../assets/images/ch08-mermaid-05.png)
 
 这些模式不是互斥的——一个复杂的 Agent 工作流中，通常会混合使用多种模式。关键是要把每个工具设计得足够"原子化"，这样组合起来才灵活。
 
@@ -1115,19 +1081,7 @@ flowchart LR
 
 我们提出工具安全的三层防护模型：
 
-```mermaid
-flowchart TB
-    subgraph L1["第1层：输入校验 ← 防御畸形/恶意输入"]
-        L1D["Pydantic 校验 / 正则匹配 / 白名单"]
-    end
-    subgraph L2["第2层：权限控制 ← 限制工具可访问的资源"]
-        L2D["RBAC / 能力令牌 / 资源白名单"]
-    end
-    subgraph L3["第3层：沙箱隔离 ← 限制工具执行环境"]
-        L3D["Docker / 子进程 / 网络隔离"]
-    end
-    L1 --> L2 --> L3
-```
+![ch08-mermaid-06.png](../assets/images/ch08-mermaid-06.png)
 
 ### 8.5.2 输入校验
 

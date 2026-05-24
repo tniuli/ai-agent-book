@@ -25,27 +25,7 @@
 
 将人类记忆模型映射到 Agent 世界，我们得到如下对应关系：
 
-```mermaid
-flowchart TB
-    subgraph main["Agent 记忆分类体系"]
-        subgraph STM["短期记忆 STM<br/>Short-term Memory"]
-            STM_D["· 对话消息窗口<br/>· 最近N轮对话<br/>· 摘要压缩<br/>· 当前任务上下文"]
-        end
-        subgraph LTM["长期记忆 LTM<br/>Long-term Memory"]
-            LTM_D["· 向量存储<br/>· 语义检索<br/>· 用户画像<br/>· 事实知识库"]
-        end
-        STM --> WM
-        LTM --> EM
-        subgraph WM["工作记忆 WM<br/>Working Memory"]
-            WM_D["· State中的变量<br/>· 中间计算结果<br/>· 当前推理步骤<br/>· 工具调用结果"]
-        end
-        subgraph EM["情景记忆 EM<br/>Episodic Memory"]
-            EM_D["· 交互历史日志<br/>· 时间戳 + 上下文<br/>· 用户偏好演变<br/>· 决策记录与反思"]
-        end
-    end
-    subgraph CP["检查点机制 Checkpointer<br/>统一管理所有记忆类型，支持状态快照、回溯、恢复"]
-    end
-```
+![ch09-mermaid-01.png](../assets/images/ch09-mermaid-01.png)
 
 让我们逐一理解：
 
@@ -88,16 +68,7 @@ LangGraph 的检查点机制实现了同样的效果：
 
 ### 9.2.2 检查点的工作流程
 
-```mermaid
-flowchart LR
-    START["START"] --> A["Node A"] --> B["Node B"] --> END["END"]
-    A --> CP1["Checkpoint #1<br/>state_a"]
-    B --> CP2["Checkpoint #2<br/>state_b"]
-    CP1 --> Backend
-    CP2 --> Backend
-    subgraph Backend["检查点存储后端<br/>MemorySaver / Postgres / Redis"]
-    end
-```
+![ch09-mermaid-02.png](../assets/images/ch09-mermaid-02.png)
 
 ### 9.2.3 代码实战：检查点基础
 
@@ -200,18 +171,7 @@ target_checkpoint = history[-1]  # 选择最早的一个
 
 最直观的短期记忆策略是"滑动窗口"——只保留最近 N 轮对话，丢弃更早的消息：
 
-```mermaid
-flowchart LR
-    subgraph 时间轴["时间 ──────────────────────────────────────▶"]
-        direction LR
-        M1["消息1<br/>丢弃"] --- M2["消息2<br/>丢弃"] --- M3["消息3<br/>丢弃"]
-        M3 -.-> W
-        subgraph W["当前窗口（N=4）"]
-            direction LR
-            M4["消息4<br/>保留"] --- M5["消息5<br/>保留"] --- M6["消息6<br/>保留"] --- M7["消息7<br/>保留"]
-        end
-    end
-```
+![ch09-mermaid-03.png](../assets/images/ch09-mermaid-03.png)
 
 滑动窗口的优点是简单高效，缺点是直接丢弃旧消息，可能丢失重要信息。用户在第1轮说的"我叫小明"，到第7轮可能就完全消失了。
 
@@ -219,23 +179,7 @@ flowchart LR
 
 摘要压缩是滑动窗口的进阶版——不是简单丢弃旧消息，而是先让 LLM 将其压缩成一段摘要，再丢弃原文。这样既控制了 token 数量，又保留了信息的精华：
 
-```mermaid
-flowchart LR
-    subgraph 原始["原始消息"]
-        direction TB
-        O1["用户：我叫小明"]
-        O2["助手：你好小明！"]
-        O3["用户：我喜欢编程"]
-        O4["助手：编程很有趣！"]
-        O5["用户：AI好有趣"]
-        O6["助手：是的！"]
-    end
-    原始 -->|"压缩"| 摘要["摘要：用户叫小明，喜欢<br/>编程，对AI感兴趣"]
-    subgraph 保留["保留近期对话"]
-        R1["用户：推荐书籍"]
-        R2["助手：推荐..."]
-    end
-```
+![ch09-mermaid-04.png](../assets/images/ch09-mermaid-04.png)
 
 ### 9.3.3 代码实战：窗口管理 + 摘要压缩
 
@@ -343,17 +287,7 @@ app = graph.compile(checkpointer=checkpointer)
 
 基本流程如下：
 
-```mermaid
-flowchart LR
-    subgraph 写入["写入阶段"]
-        direction TB
-        W1[""用户喜欢吃辣""] --> W2["Embedding模型"] --> W3["[0.23, -0.15, 0.89, ...]"] --> W4["存入向量数据库"]
-    end
-    subgraph 检索["检索阶段"]
-        direction TB
-        R1[""推荐晚餐""] --> R2["Embedding模型"] --> R3["[0.18, -0.12, 0.75, ...]"] --> R4["计算与所有向量的相似度"] --> R5["返回 Top-K 最相关结果"]
-    end
-```
+![ch09-mermaid-05.png](../assets/images/ch09-mermaid-05.png)
 
 关键概念解释：
 
@@ -552,14 +486,7 @@ Redis 后端的优势：
 
 ### 9.6.1 架构设计
 
-```mermaid
-flowchart TD
-    Input["用户输入"] --> ME["memory_extractor<br/>从对话中提取事实"]
-    ME --> Recall["recall<br/>检索相关长期记忆"]
-    Recall --> Respond["respond<br/>生成回复"]
-    Respond --> WC["window_compress<br/>窗口压缩"]
-    WC --> Output["输出回复"]
-```
+![ch09-mermaid-06.png](../assets/images/ch09-mermaid-06.png)
 
 四个节点的职责清晰分明：
 

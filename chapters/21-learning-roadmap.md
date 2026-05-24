@@ -954,44 +954,7 @@ async def call_tool(name: str, arguments: dict):
 
 **系统架构：**
 
-```mermaid
-flowchart TB
-    subgraph App["系统架构"]
-        direction LR
-
-        subgraph Frontend["Web Frontend"]
-            ChatUI["对话界面"]
-            KnowledgeMgmt["知识管理"]
-            ToolConfig["工具配置"]
-            MonitorDash["监控面板"]
-        end
-
-        subgraph Backend["Backend Core"]
-            Gateway["API Gateway<br/>Auth / Rate Limit / Route"]
-
-            AgentRT["Agent Runtime<br/>ReAct / Plan / Custom"]
-            KnowledgeSvc["Knowledge Service<br/>RAG / Vector / Chunk"]
-            ToolReg["Tool Registry<br/>MCP / Custom / API"]
-            MonitorSvc["Monitor Service<br/>Traces / Metrics / Alerts"]
-        end
-
-        subgraph Infra["Infrastructure"]
-            LLMRouter["LLM Router"]
-            VectorDB["Vector DB"]
-            RDBMS["RDBMS"]
-            Cache["Cache Redis"]
-        end
-    end
-
-    Frontend --> Gateway
-    Gateway --> AgentRT
-    Gateway --> KnowledgeSvc
-    Gateway --> ToolReg
-    Gateway --> MonitorSvc
-    AgentRT --> LLMRouter
-    KnowledgeSvc --> VectorDB
-    KnowledgeSvc --> Cache
-```
+![ch21-mermaid-01.png](../assets/images/ch21-mermaid-01.png)
 
 **验收标准：**
 - 用户能通过 Web 界面配置和运行 Agent

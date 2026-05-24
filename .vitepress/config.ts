@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitepress'
-import { diagramPlugin } from 'vitepress-plugin-mermaid-diagram'
 
 export default defineConfig({
   base: '/ai-agent-book/',
@@ -148,9 +147,6 @@ export default defineConfig({
       light: 'github-light',
       dark: 'github-dark'
     },
-    lineNumbers: true,
-    config(md) {
-      md.use(diagramPlugin)
-    }
+    lineNumbers: true
   }
 })
