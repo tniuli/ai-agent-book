@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: 开始阅读
-      link: /chapters/01-overview
+      link: /chapters/00-preface
     - theme: alt
       text: 目录浏览
-      link: /chapters/01-overview
+      link: /chapters/00-preface
 
 features:
   - icon: 🧠
