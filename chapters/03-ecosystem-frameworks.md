@@ -213,7 +213,11 @@ print(result.final_output)
 
 要理解 Deep Agents 在 LangChain Agent 技术栈中的位置，可以这样看：
 
-![ch03-mermaid-01.png](../assets/images/ch03-mermaid-01.png)
+```
+LangGraph（图运行时，最底层）
+  └── create_agent（轻量 Agent 框架，中间层）
+        └── Deep Agents（全功能自主 Agent 框架，最高层）
+```
 
 三者共享同一套基础构建块，但每一层都在上层的基础上封装了更多能力。LangGraph 是引擎，`create_agent` 是底盘，Deep Agents 是整车。
 
