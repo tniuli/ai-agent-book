@@ -68,7 +68,7 @@
 
 这本书的初稿得到了多位同行工程师的审阅和反馈，他们在一遍遍阅读中指出了大量技术错误和表述不清之处。书中的传统智慧融入得益于与多位传统文化爱好者的讨论，他们帮我从"为引而引"的堆砌中走出来，确立了"点到为止、宁缺毋滥"的融入原则。在此深表感谢。
 
-如果书中仍有错漏，责任在我。发现问题欢迎在 [GitHub Issues](https://github.com/hanqing/ai-agent-book/issues) 中反馈，或者直接提 Pull Request。
+如果书中仍有错漏，责任在我。发现问题欢迎在 [GitHub Issues](https://github.com/tniuli/ai-agent-book/issues) 中反馈，或者直接提 Pull Request。
 
 ***
 

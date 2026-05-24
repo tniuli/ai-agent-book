@@ -14,7 +14,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
-      { text: '开始阅读', link: '/chapters/01-overview' },
+      { text: '开始阅读', link: '/chapters/00-preface' },
       {
         text: 'GitHub',
         link: 'https://github.com/tniuli/ai-agent-book'
