@@ -54,7 +54,7 @@
   opacity: 0;
 }
 
-/* 封面图片 —— 突破 VitePress 默认尺寸限制 */
+/* 封面图片 —— 默认 320px 放大 50% */
 .VPHero .image-container {
   display: flex;
   align-items: center;
@@ -62,21 +62,15 @@
 }
 
 .VPHero .image-src {
-  max-width: 420px;
-  max-height: 560px;
+  max-width: 480px;
+  max-height: 640px;
 }
 
 @media (max-width: 960px) {
   .VPHero .image-src {
-    max-width: 280px;
-    max-height: 380px;
+    max-width: 320px;
+    max-height: 430px;
   }
-}
-
-/* 图片悬停效果 */
-.VPHero .image-container .VPImage:hover {
-  transform: scale(1.03);
-  transition: transform 0.3s ease;
 }
 
 /* Features 图标高级样式 */
