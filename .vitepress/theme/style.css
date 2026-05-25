@@ -65,8 +65,20 @@
   opacity: 0;
 }
 
+/* 封面图片放大 50% */
+.VPHero .image-container {
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.VPHero .image-container .VPImage {
+  transform: scale(1.5);
+}
+
 /* 图片悬停效果 */
-.hero-image:hover {
-  transform: scale(1.02);
+.VPHero .image-container .VPImage:hover {
+  transform: scale(1.55);
   transition: transform 0.3s ease;
 }
