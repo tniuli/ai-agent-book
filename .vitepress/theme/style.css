@@ -1,6 +1,7 @@
 /* Hero 区域撑满首屏，将下方组件推到下一屏 */
 .VPHomeHero {
   min-height: calc(100vh - 64px);
+  padding-top: 10vh;
 }
 
 /* 封面加载动画 */
