@@ -56,7 +56,6 @@
 
 /* 封面图片 —— 突破 VitePress 默认尺寸限制 */
 .VPHero .image-container {
-  overflow: visible;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,6 +64,13 @@
 .VPHero .image-src {
   max-width: 420px;
   max-height: 560px;
+}
+
+@media (max-width: 960px) {
+  .VPHero .image-src {
+    max-width: 280px;
+    max-height: 380px;
+  }
 }
 
 /* 图片悬停效果 */
