@@ -1,7 +1,10 @@
-/* Hero 区域撑满首屏，将下方组件推到下一屏 */
+/* Hero 区域撑满首屏，内容垂直居中 */
 .VPHomeHero {
-  min-height: calc(100vh - 64px);
-  padding-top: 22vh !important;
+  min-height: calc(100vh - 64px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding-top: 0 !important;
 }
 
 /* 封面加载动画 */
