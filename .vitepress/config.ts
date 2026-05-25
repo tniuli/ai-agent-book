@@ -8,7 +8,12 @@ export default defineConfig({
   
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
-    ['meta', { name: 'theme-color', content: '#3eaf7c' }]
+    ['meta', { name: 'theme-color', content: '#3eaf7c' }],
+    ['meta', { property: 'og:image', content: 'https://tniuli.github.io/ai-agent-book/cover.png' }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { name: 'twitter:image', content: 'https://tniuli.github.io/ai-agent-book/cover.png' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }]
   ],
 
   themeConfig: {

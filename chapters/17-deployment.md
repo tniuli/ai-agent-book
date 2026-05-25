@@ -4,7 +4,7 @@
 
 你在本地跑通了一个 Agent，它能搜索、能推理、能调用工具，看起来无所不能。但当你要把它放到生产环境时，一连串问题扑面而来：怎么部署？怎么控制成本？怎么监控？怎么保证稳定？这一章，我们就来把 Agent 从"能跑"变成"能扛"。本章将带你掌握 Agent 的三种部署架构（同步 API、异步流式、事件驱动），学会成本优化策略（模型选择、缓存、批处理），理解可观测性三支柱（日志、追踪、指标）在 Agent 运维中的应用，并实战构建生产级 Agent API 服务。
 
----
+- - -
 
 ## 17.1 Agent 部署架构
 
@@ -95,7 +95,7 @@ CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
 
 容器化的好处不只是"环境一致"，更重要的是它让水平扩展变得简单——用 Kubernetes 或 Docker Compose 就能快速增加实例数，应对流量高峰。
 
----
+- - -
 
 ## 17.2 成本优化
 
@@ -262,13 +262,14 @@ class ExactCache:
 
 ```python
 # 版本: ch16_semantic_cache.py v1.0
+import os
 from openai import OpenAI
 
 class SemanticCache:
     """语义缓存，基于向量相似度匹配"""
 
     def __init__(self, similarity_threshold: float = 0.92, ttl: int = 3600):
-        self.client = OpenAI()
+        self.client = OpenAI(base_url=os.getenv("OPENAI_BASE_URL"))
         self.threshold = similarity_threshold
         self.ttl = ttl
         self.entries = []  # [{"embedding": [...], "response": ..., "timestamp": ...}]
@@ -383,7 +384,7 @@ class SemanticCache:
 | 模型路由 | 简单任务用小模型 | 40%-70% | 中 |
 | 批处理（Batch API） | 离线任务用批处理接口 | 50% | 低 |
 
----
+- - -
 
 ## 17.3 可观测性
 
@@ -503,7 +504,7 @@ OpenTelemetry 的优势是通用性——无论你用什么框架，都可以统
 | 可用性 | 请求成功率 | < 99% |
 | 可用性 | 超时率 | > 5% |
 
----
+- - -
 
 ## 17.4 LangGraph Platform 部署
 
@@ -592,7 +593,7 @@ docker compose up -d
 | 定制灵活性 | 低 | 中 | 高 |
 | 适合阶段 | MVP / 快速验证 | 中大规模 | 大规模 / 深度定制 |
 
----
+- - -
 
 ## 17.5 A/B 测试与持续改进
 
@@ -677,7 +678,7 @@ A/B 测试不是一次性的，它应该融入持续改进的闭环：
 ```
 发现问题 → 设计实验 → 分流运行 → 收集数据 → 分析结果 → 决策上线
      ↑                                                        |
-     └──────────────── 发现新问题 ←────────────────────────────┘
+     +---------------- 发现新问题 ←----------------------------+
 ```
 
 **持续改进的关键指标：**
@@ -726,7 +727,7 @@ jobs:
             --threshold 0.05
 ```
 
----
+- - -
 
 ## 17.6 实战
 
@@ -736,16 +737,16 @@ jobs:
 
 ```
 ch16/
-├── app.py                  # FastAPI 主应用
-├── agent/
-│   ├── __init__.py
-│   ├── core.py             # Agent 核心逻辑
-│   ├── cache.py            # 缓存模块
-│   ├── model_router.py     # 模型路由
-│   └── context_manager.py  # 上下文管理
-├── requirements.txt
-├── Dockerfile
-└── docker-compose.yml
+├-- app.py                  # FastAPI 主应用
+├-- agent/
+|   ├-- __init__.py
+|   ├-- core.py             # Agent 核心逻辑
+|   ├-- cache.py            # 缓存模块
+|   ├-- model_router.py     # 模型路由
+|   +-- context_manager.py  # 上下文管理
+├-- requirements.txt
+├-- Dockerfile
++-- docker-compose.yml
 ```
 
 ### 17.6.2 核心代码实现
@@ -803,7 +804,7 @@ curl -X POST http://localhost:8000/api/chat/stream \
 | 成本 | 缓存策略生效 | ☐ |
 | 性能 | 压测验证承载能力 | ☐ |
 
----
+- - -
 
 ## 进阶必做
 
@@ -826,4 +827,4 @@ curl -X POST http://localhost:8000/api/chat/stream \
 
 3. **可观测性的隐私边界**：追踪 Agent 的完整执行链路意味着记录用户的每一次输入和输出。在合规要求（如 GDPR、个人信息保护法）下，应该如何设计可观测性方案？
 
----
+- - -
