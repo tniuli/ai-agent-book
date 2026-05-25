@@ -5,6 +5,9 @@ hero:
   name: AI Agent 开发
   text: 从原理到生产
   tagline: 面向开发者的系统实践指南
+  image:
+    src: ./assets/images/cover.png
+    alt: AI Agent 开发：从原理到生产
   actions:
     - theme: brand
       text: 开始阅读
