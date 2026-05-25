@@ -8,7 +8,7 @@
 
 ## 7.1 从 Chain 到 Graph 的演进——为什么需要图？
 
-在第 6 章，我们用 LangChain 的 Chain 把 LLM 调用串了起来——Prompt 模板填入变量，传给 LLM，输出再交给下一个环节处理。这就像流水线：原料进去，成品出来，方向单一，路径固定。
+第 6 章的 Chain 把 LLM 调用串成了流水线——方向单一，路径固定。Agent 的真实场景，很少是一条直线能搞定的。
 
 但真实的 Agent 场景，很少是一条直线能搞定的。
 
@@ -330,7 +330,7 @@ print(result["messages"][-1].content)
 
 ## 7.5 实战
 
-理论讲完了，让我们动手构建一个真正的客服 Agent。这个 Agent 能根据用户意图，自动路由到不同的处理分支，还能在必要时转接人工。
+现在动手构建一个真正的客服 Agent。这个 Agent 能根据用户意图，自动路由到不同的处理分支，还能在必要时转接人工。
 
 动手之前有两点值得留意。LangGraph 的条件边（conditional edge）依赖路由函数返回下一个节点名——如果返回值没有对应的边映射，运行时会直接抛出 KeyError，所以路由函数的所有可能返回值都必须在 `add_conditional_edges` 中有对应的映射。另一个容易踩坑的地方是 State 字段缺失：节点函数读取某个字段时如果 State 定义中遗漏了它，同样会触发 KeyError，因此 State 定义时最好预留所有可能用到的字段，用 `Optional` 标注可能为空的字段。
 
@@ -404,7 +404,7 @@ class CustomerServiceState(TypedDict):
 
 # ── LLM 初始化 ──────────────────────────────────────
 
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm = ChatOpenAI(model="claude-sonnet-4-6", temperature=0)
 
 # ── 模拟数据 ────────────────────────────────────────
 
@@ -713,7 +713,7 @@ class ResearchState(TypedDict):
 
 # ── LLM 初始化 ──────────────────────────────────────
 
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+llm = ChatOpenAI(model="claude-sonnet-4-6", temperature=0)
 
 # ── 模拟搜索 ────────────────────────────────────────
 
@@ -992,7 +992,7 @@ type AgentStateType = typeof AgentState.State;
 
 // ── LLM 初始化 ──────────────────────────────────────
 
-const llm = new ChatOpenAI({ modelName: "gpt-4o-mini", temperature: 0 });
+const llm = new ChatOpenAI({ modelName: "claude-sonnet-4-6", temperature: 0 });
 
 // ── 模拟数据 ────────────────────────────────────────
 
@@ -1180,7 +1180,7 @@ def build_prompt(state: AgentState) -> str:
 
 ---
 
-## 习题
+## 进阶必做
 
 1. **为客服 Agent 添加"追问"节点**：当用户说"我要退款"但没有提供订单号时，Agent 应该追问订单号，然后回到退款处理节点。提示：这需要一个循环结构——`handle_refund` → 条件判断 → `ask_order` → `handle_refund`。
 

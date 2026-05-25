@@ -8,8 +8,6 @@
 
 ## 6.1 LangChain 核心抽象
 
-上一章我们用纯 Python 手搓了一个最小 Agent，核心代码不到 100 行。你一定发现了：代码虽然不长，但"体力活"很多——手动拼消息列表、手动解析工具调用、手动管理记忆……每加一个功能，就要在好几个地方改代码。
-
 LangChain 就是来帮你做这些"体力活"的。它不是一个神秘的黑盒，而是一套精心设计的抽象层——把你手写的那些模式，变成了可复用的组件。第 5 章从零实现是"知其然"——理解 Agent 本质；本章学框架是"用其利"——用更少的代码做同样的事。
 
 LangChain 的核心抽象只有四个：
@@ -40,12 +38,12 @@ LangChain 的核心抽象只有四个：
 # 第6章裸写
 from openai import OpenAI
 client = OpenAI()
-response = client.chat.completions.create(model="gpt-4o", messages=[...])
+response = client.chat.completions.create(model="claude-opus-4-7", messages=[...])
 
 # LangChain：统一接口
 from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model="gpt-4o")          # OpenAI
-# llm = ChatAnthropic(model="claude-sonnet-4-20250514")  # 切 Claude 只改这一行
+llm = ChatOpenAI(model="claude-opus-4-7")          # OpenAI
+# llm = ChatAnthropic(model="claude-sonnet-4-6")  # 切 Claude 只改这一行
 response = llm.invoke("你好")
 ```
 
@@ -174,7 +172,7 @@ Prompt（构造输入）→ Model（调用 LLM）→ Chain（串联流程）→ 
 
 ## 6.2 LCEL 详解
 
-LCEL（LangChain Expression Language）是 LangChain 最具革命性的设计。它用管道符 `|` 把组件串起来，让数据像水流一样从上游流向下游。
+LCEL（LangChain Expression Language）是 LangChain 最核心的设计。它用管道符 `|` 把组件串起来，让数据像水流一样从上游流向下游。
 
 ### 6.2.1 管道符：从 Linux 到 LangChain
 
@@ -374,7 +372,7 @@ get_time = StructuredTool.from_function(
 ```python
 from langchain_openai import ChatOpenAI
 
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="claude-opus-4-7")
 tools = [search, calculate, get_time]
 
 # 把工具绑定到 LLM 上
@@ -527,7 +525,7 @@ result = structured_llm.invoke("分析北京今天的天气：晴，22度")
 # result 直接是 WeatherReport 实例！
 ```
 
-`with_structured_output()` 底层会根据模型能力选择最佳策略——支持 Function Calling 的模型（如 GPT-4o）用它来做结构化输出，不支持的则退回到提示词 + 解析器模式。你不用关心底层细节，一个方法搞定。
+`with_structured_output()` 底层会根据模型能力选择最佳策略——支持 Function Calling 的模型（如 GPT-5.5）用它来做结构化输出，不支持的则退回到提示词 + 解析器模式。你不用关心底层细节，一个方法搞定。
 
 三种解析方式的选择：
 
@@ -542,7 +540,7 @@ result = structured_llm.invoke("分析北京今天的天气：晴，22度")
 
 ## 6.5 实战
 
-到了最激动人心的环节——用 LangChain 重写第 5 章的最小 Agent。我们要做的是同一个东西，但代码会更少、更清晰、更易维护。
+到了实战环节——用 LangChain 重写第 5 章的最小 Agent。我们要做的是同一个东西，但代码会更少、更清晰、更易维护。
 
 在开始之前，先提醒两个 LCEL 管道搭建时最容易踩的坑：一是**类型不匹配**——LCEL 用 `|` 串联组件时，上游输出类型必须与下游输入类型兼容，否则运行时报错；尤其常见的是在管道中插入普通函数却忘记用 `RunnableLambda` 包装，导致 `|` 运算符无法识别。二是**模板变量名不一致**——`ChatPromptTemplate` 的变量名与代码中的 key 对不上时，模板渲染会静默失败，排查起来非常耗时。建议的做法是：搭建完管道后先用 `chain.get_graph()` 打印 DAG 图确认类型流转是否正确，同时确保所有自定义函数都用 `RunnableLambda` 包装、模板变量名与代码 key 严格对齐。
 
@@ -643,9 +641,9 @@ def get_time(offset_days: int = 0) -> str:
 
 从 ~90 行缩减到 ~20 行，关键差异在于：
 
-- **不需要手写 `ToolRegistry`**：`@tool` 装饰器自动完成注册
-- **不需要手写 JSON Schema**：从函数签名和 docstring 自动推导
-- **不需要手写参数解析**：LangChain 自动处理 `json.loads` 和参数映射
+- 不需要手写 `ToolRegistry`：`@tool` 装饰器自动完成注册
+- 不需要手写 JSON Schema：从函数签名和 docstring 自动推导
+- 不需要手写参数解析：LangChain 自动处理 `json.loads` 和参数映射
 
 ### 6.5.3 提示词：从字符串到模板
 
@@ -727,11 +725,11 @@ answer = result["messages"][-1].content
 
 四行核心代码 vs 六十行手写循环。`create_react_agent` 帮你做了：
 
-- **ReAct 循环**：自动实现"思考→行动→观察"的循环
-- **工具调度**：自动解析 `tool_calls`、执行工具、回传结果
-- **状态管理**：自动维护对话历史，不需要手动管理消息列表
-- **终止条件**：LLM 不再调用工具时自动终止
-- **错误处理**：工具调用失败时的默认处理逻辑
+- ReAct 循环：自动实现"思考→行动→观察"的循环
+- 工具调度：自动解析 `tool_calls`、执行工具、回传结果
+- 状态管理：自动维护对话历史，不需要手动管理消息列表
+- 终止条件：LLM 不再调用工具时自动终止
+- 错误处理：工具调用失败时的默认处理逻辑
 
 这不是魔法，只是框架把第 5 章你手写的那些模式，封装成了可复用的组件。你理解了第 5 章的原理，这里的每一步你都能对应到。
 
@@ -749,7 +747,7 @@ from llm_client import LLMClient, LLMConfig
 
 SYSTEM_PROMPT = "你是一个有用的 AI 助手。你可以使用以下工具..."
 
-config = LLMConfig(model="gpt-4o", temperature=0.7)
+config = LLMConfig(model="claude-opus-4-7", temperature=0.7)
 llm = LLMClient(config)
 tools = create_mock_registry()
 memory = ConversationMemory(system_prompt=SYSTEM_PROMPT)
@@ -769,7 +767,7 @@ from tools import search, calculate, get_time
 
 SYSTEM_PROMPT = "你是一个有用的 AI 助手。你可以使用以下工具..."
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
+llm = ChatOpenAI(model="claude-opus-4-7", temperature=0.7)
 agent = create_react_agent(
     model=llm,
     tools=[search, calculate, get_time],
@@ -853,12 +851,12 @@ print(result["casual"])  # 口语版回答
 当主模型不可用时，自动切换到备用模型：
 
 ```python
-primary_llm = ChatOpenAI(model="gpt-4o")
-fallback_llm = ChatOpenAI(model="gpt-4o-mini")
+primary_llm = ChatOpenAI(model="claude-opus-4-7")
+fallback_llm = ChatOpenAI(model="claude-sonnet-4-6")
 
 chain = prompt | primary_llm.with_fallbacks([fallback_llm]) | StrOutputParser()
 
-# gpt-4o 失败时自动尝试 gpt-4o-mini
+# Claude Opus 4.7 失败时自动尝试 Claude Sonnet 4.6
 result = chain.invoke({"input": "你好"})
 ```
 
@@ -866,7 +864,7 @@ result = chain.invoke({"input": "你好"})
 
 ---
 
-## 习题
+## 进阶必做
 
 1. **用 StructuredTool 重写工具**：将 6.5.2 中的 `get_time` 工具从 `@tool` 装饰器风格改为 `StructuredTool` 风格，使用 Pydantic 模型定义参数。要求 `offset_days` 必须在 -365 到 365 之间。思考：`@tool` 自动推导的 schema 能表达这种约束吗？
 

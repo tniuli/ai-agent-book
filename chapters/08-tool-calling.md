@@ -1,4 +1,4 @@
-# 第8章 工具调用——让 Agent 手握利器
+# 第8章 工具调用
 
 > 备物致用，立成器以为天下利。——《易经·系辞上》
 
@@ -121,7 +121,7 @@ def run_multi_tool_conversation(user_message: str):
 
     # 第一步
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="claude-opus-4-7",
         messages=messages,
         tools=tools,
         tool_choice="auto",  # 自动决定是否调用工具
@@ -153,7 +153,7 @@ def run_multi_tool_conversation(user_message: str):
 
         # 第三步
         final_response = client.chat.completions.create(
-            model="gpt-4o",
+            model="claude-opus-4-7",
             messages=messages,
             tools=tools,
         )
@@ -249,7 +249,7 @@ def run_tool_chain(user_message: str, max_rounds: int = 5):
 
     for round_num in range(max_rounds):
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="claude-opus-4-7",
             messages=messages,
             tools=tools,
             tool_choice="auto",
@@ -302,14 +302,14 @@ if __name__ == "__main__":
 
 **实战建议**：
 
-1. **默认用 `auto`**：让模型自主判断，这是最灵活的策略
-2. **流程化场景用 `required` 或指定工具**：比如你的 Agent 流程要求第一步必须查数据库，那就用指定工具策略强制走查库路径
-3. **注意 `none` 的使用**：有些场景你确实需要模型"闭嘴思考"而不调用工具，比如在生成方案阶段
+1. 默认用 `auto`：让模型自主判断，这是最灵活的策略
+2. 流程化场景用 `required` 或指定工具：比如你的 Agent 流程要求第一步必须查数据库，那就用指定工具策略强制走查库路径
+3. 注意 `none` 的使用：有些场景你确实需要模型"闭嘴思考"而不调用工具，比如在生成方案阶段
 
 ```python
 # 策略一：强制必须调用工具（不指定哪个）
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="claude-opus-4-7",
     messages=messages,
     tools=tools,
     tool_choice="required",
@@ -317,7 +317,7 @@ response = client.chat.completions.create(
 
 # 策略二：强制调用指定工具
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="claude-opus-4-7",
     messages=messages,
     tools=tools,
     tool_choice={"type": "function", "function": {"name": "get_weather"}},
@@ -325,7 +325,7 @@ response = client.chat.completions.create(
 
 # 策略三：禁止调用工具（纯对话）
 response = client.chat.completions.create(
-    model="gpt-4o",
+    model="claude-opus-4-7",
     messages=messages,
     tools=tools,
     tool_choice="none",
@@ -338,10 +338,10 @@ response = client.chat.completions.create(
 
 一个精确的工具定义要做到：
 
-1. **描述要消除歧义**：不要写"获取数据"，要写"根据城市名称获取该城市当前天气信息，包括温度、湿度、天气状况"
-2. **参数类型要严格**：枚举值用 `enum` 约束，数值范围用 `minimum`/`maximum` 限定
-3. **必填与选填要分明**：`required` 数组只放真正必须的参数，可选参数提供默认值说明
-4. **返回格式要文档化**：在 `description` 中说明返回值的结构
+1. 描述要消除歧义：不要写"获取数据"，要写"根据城市名称获取该城市当前天气信息，包括温度、湿度、天气状况"
+2. 参数类型要严格：枚举值用 `enum` 约束，数值范围用 `minimum`/`maximum` 限定
+3. 必填与选填要分明：`required` 数组只放真正必须的参数，可选参数提供默认值说明
+4. 返回格式要文档化：在 `description` 中说明返回值的结构
 
 ```json
 {
@@ -374,7 +374,7 @@ response = client.chat.completions.create(
 
 ## 8.2 LangChain 的工具体系
 
-如果说原生 Function Calling 是"手工锻造"，那 LangChain 的工具体系就是"工业化生产"。它提供了标准化的工具抽象、便捷的装饰器语法、以及丰富的预置工具库，让我们能快速构建可复用的工具集。
+如果说原生 Function Calling 是"手工锻造"，那 LangChain 的工具体系就是"标准化生产"。它提供了标准化的工具抽象、便捷的装饰器语法、以及丰富的预置工具库，让我们能快速构建可复用的工具集。
 
 ### 8.2.1 三种工具定义方式
 
@@ -585,7 +585,7 @@ def run_agent():
     """使用 LangChain Agent 执行工具调用"""
 
     # 初始化模型
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="claude-opus-4-7", temperature=0)
 
     # 工具列表
     tools = [search_product, calculate_discount, check_inventory]
@@ -832,7 +832,7 @@ async def run_mcp_agent():
                 print(f"  - {tool.name}: {tool.description}")
 
             # 将 MCP 工具绑定到 LangChain Agent
-            llm = ChatOpenAI(model="gpt-4o", temperature=0)
+            llm = ChatOpenAI(model="claude-opus-4-7", temperature=0)
             prompt = ChatPromptTemplate.from_messages([
                 ("system", "你是一个城市信息助手，可以查询天气和城市信息。请用中文回答。"),
                 ("human", "{input}"),
@@ -858,11 +858,11 @@ if __name__ == "__main__":
 
 MCP 带来的变革可以用三个关键词概括：
 
-1. **一次开发，处处可用**：你开发一个 MCP Server，任何支持 MCP 的客户端（Claude Desktop、Cursor、各种 Agent 框架）都能直接使用，无需为每个框架写适配代码
+1. 一次开发，处处可用：你开发一个 MCP Server，任何支持 MCP 的客户端（Claude Desktop、Cursor、各种 Agent 框架）都能直接使用，无需为每个框架写适配代码
 
-2. **动态发现**：Client 不需要预先知道 Server 有哪些工具，连接后通过协议自动发现。这意味着你可以随时给 Server 添加新工具，Client 端无需修改
+2. 动态发现：Client 不需要预先知道 Server 有哪些工具，连接后通过协议自动发现。这意味着你可以随时给 Server 添加新工具，Client 端无需修改
 
-3. **安全边界**：MCP 的 Resource 机制是只读的，Tool 机制是有明确签名的。Server 可以控制暴露哪些能力、限制哪些操作，形成天然的安全边界
+3. 安全边界：MCP 的 Resource 机制是只读的，Tool 机制是有明确签名的。Server 可以控制暴露哪些能力、限制哪些操作，形成天然的安全边界
 
 > 古语点睛："车同轨，书同文"——秦统一六国后的第一件大事就是统一度量衡，因为标准统一是协作的基础。MCP 在 Agent 世界中扮演的正是这个角色。
 
@@ -1071,15 +1071,15 @@ if __name__ == "__main__":
 
 ### 8.4.3 工具组合模式
 
-当单个工具无法满足需求时，我们可以组合多个工具形成更强大的能力。常见的组合模式：
+当单个工具无法满足需求时，我们可以组合多个工具形成覆盖更广的能力。常见的组合模式：
 
-**1. 串行链式模式**：工具 A 的输出作为工具 B 的输入
+1. 串行链式模式：工具 A 的输出作为工具 B 的输入
 
 ```
 用户提问 → [查汇率] → [计算金额] → [格式化输出] → 回答
 ```
 
-**2. 并行聚合模式**：多个工具同时执行，结果聚合
+2. 并行聚合模式：多个工具同时执行，结果聚合
 
 ```
 用户提问 → [查天气] ──┐
@@ -1087,7 +1087,7 @@ if __name__ == "__main__":
          → [查酒店] ──┘
 ```
 
-**3. 条件路由模式**：根据中间结果决定调用哪个工具
+3. 条件路由模式：根据中间结果决定调用哪个工具
 
 ```
 用户提问 → [意图识别] ─→ 退货 → [退款工具]
@@ -1417,7 +1417,7 @@ if __name__ == "__main__":
 
 ## 8.6 实战
 
-理论讲了这么多，是时候动手了。我们将为 Agent 接入三种最常见的工具：数据库查询、API 调用、文件系统操作。每个工具都遵循上一节的生产级标准，完整可运行。
+为 Agent 接入三种最常见的工具：数据库查询、API 调用、文件系统操作。每个工具都遵循上一节的生产级标准，完整可运行。
 
 ### 8.6.1 数据库查询工具
 
@@ -1940,7 +1940,7 @@ logging.basicConfig(level=logging.INFO)
 def create_agent():
     """创建集成所有工具的 Agent"""
 
-    llm = ChatOpenAI(model="gpt-4o", temperature=0)
+    llm = ChatOpenAI(model="claude-opus-4-7", temperature=0)
 
     # 收集所有工具
     tools = [
@@ -2049,7 +2049,7 @@ MCP 协议仍在快速发展中。未来的方向包括：
 
 ---
 
-## 习题
+## 进阶必做
 
 1. **实现一个支持工具选择的智能路由器**：开发一个工具路由组件，能根据用户问题自动从大量工具中筛选出最相关的 3-5 个工具，再将精简后的工具列表传给模型。对比精简前后的工具选择准确率和响应时间。
 

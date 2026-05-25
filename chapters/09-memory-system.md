@@ -85,7 +85,7 @@
 
 在第6章中，我们使用 LangChain 的 ConversationMemory 来管理对话历史。那种方式有一个根本性的局限：它只是一个内存中的列表，进程重启就消失，也无法回溯到之前的某个状态。
 
-LangGraph 引入了检查点机制（Checkpointer），这是一个质的飞跃。
+LangGraph 引入了检查点机制（Checkpointer），这是一个重要的提升。
 
 ### 9.2.1 检查点是什么
 
@@ -755,7 +755,7 @@ LangGraph 的设计天然支持这种场景——多个 Agent 可以共享同一
 
 ---
 
-## 习题
+## 进阶必做
 
 1. **记忆持久化**：将本章的个人助手从 MemorySaver 迁移到 PostgresSaver。要求：使用 Docker 启动一个 PostgreSQL 实例，配置 PostgresSaver，验证重启后记忆不丢失。
 
