@@ -69,19 +69,20 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: '第14章 评估与测试', link: '/chapters/14-evaluation' },
-          { text: '第15章 安全与对齐', link: '/chapters/15-security-alignment' },
-          { text: '第16章 部署与运维', link: '/chapters/16-deployment' },
-          { text: '第17章 调试技巧', link: '/chapters/17-debugging' }
+          { text: '第15章 Agent 安全防御', link: '/chapters/15-security-defense' },
+          { text: '第16章 模型对齐与安全防护', link: '/chapters/16-alignment-and-audit' },
+          { text: '第17章 部署与运维', link: '/chapters/17-deployment' },
+          { text: '第18章 Agent 调试方法论', link: '/chapters/18-debugging' }
         ]
       },
       {
         text: '第五篇 前沿篇',
         collapsed: false,
         items: [
-          { text: '第18章 行业案例', link: '/chapters/18-industry-cases' },
-          { text: '第19章 商业模式', link: '/chapters/19-business-model' },
-          { text: '第20章 未来趋势', link: '/chapters/20-future-trends' },
-          { text: '第21章 学习路线图', link: '/chapters/21-learning-roadmap' }
+          { text: '第19章 行业案例拆解', link: '/chapters/19-industry-cases' },
+          { text: '第20章 Agent 商业模式', link: '/chapters/20-business-model' },
+          { text: '第21章 未来趋势', link: '/chapters/21-future-trends' },
+          { text: '第22章 实践路线图', link: '/chapters/22-learning-roadmap' }
         ]
       },
       {
