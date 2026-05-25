@@ -30,14 +30,14 @@ export default defineConfig({
       {
         text: '📖 前言',
         items: [
-          { text: '本书简介', link: '/chapters/00-preface' }
+          { text: '前言', link: '/chapters/00-preface' }
         ]
       },
       {
         text: '第一篇 原理篇',
         collapsed: false,
         items: [
-          { text: '第1章 AI Agent 的本质', link: '/chapters/01-overview' },
+          { text: '第1章 AI Agent 概述', link: '/chapters/01-overview' },
           { text: '第2章 Agent 核心架构', link: '/chapters/02-core-architecture' },
           { text: '第3章 技术生态：框架与模型', link: '/chapters/03-ecosystem-frameworks' },
           { text: '第4章 技术生态：工具链与基础设施', link: '/chapters/04-ecosystem-tools' }
@@ -51,7 +51,7 @@ export default defineConfig({
           { text: '第6章 LangChain 基础', link: '/chapters/06-langchain-basics' },
           { text: '第7章 LangGraph 深度实战', link: '/chapters/07-langgraph-deep-dive' },
           { text: '第8章 工具调用', link: '/chapters/08-tool-calling' },
-          { text: '第9章 记忆系统', link: '/chapters/09-memory-system' }
+          { text: '第9章 记忆系统——让 Agent 拥有温故知新的能力', link: '/chapters/09-memory-system' }
         ]
       },
       {
@@ -68,9 +68,9 @@ export default defineConfig({
         text: '第四篇 生产篇',
         collapsed: false,
         items: [
-          { text: '第14章 评估与测试', link: '/chapters/14-evaluation' },
+          { text: '第14章 评估与测试——让 Agent 经得起检验', link: '/chapters/14-evaluation' },
           { text: '第15章 Agent 安全防御', link: '/chapters/15-security-defense' },
-          { text: '第16章 模型对齐与安全防护', link: '/chapters/16-alignment-and-audit' },
+          { text: '第16章 模型对齐与安全防护层实战', link: '/chapters/16-alignment-and-audit' },
           { text: '第17章 部署与运维', link: '/chapters/17-deployment' },
           { text: '第18章 Agent 调试方法论', link: '/chapters/18-debugging' }
         ]
@@ -102,7 +102,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/tniuli/ai-agent-book/edit/main/books/ai-agent/chapters/:path',
+      pattern: 'https://github.com/tniuli/ai-agent-book/edit/main/books/ai-agent/:path',
       text: '在 GitHub 上编辑此页'
     },
 
