@@ -1,8 +1,6 @@
 /* Hero 区域撑满首屏，将下方组件推到下一屏 */
 .VPHomeHero {
   min-height: calc(100vh - 64px);
-  display: flex;
-  align-items: center;
 }
 
 /* 封面加载动画 */
@@ -73,4 +71,28 @@
 .VPHero .image-container .VPImage:hover {
   transform: scale(1.03);
   transition: transform 0.3s ease;
+}
+
+/* Features 图标高级样式 */
+.VPFeature .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  font-size: 26px;
+  margin-bottom: 20px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.VPFeature:hover .icon {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .VPFeature:hover .icon {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
