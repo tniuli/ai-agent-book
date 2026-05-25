@@ -65,7 +65,7 @@
   opacity: 0;
 }
 
-/* 封面图片放大 50% */
+/* 封面图片 —— 突破 VitePress 默认尺寸限制 */
 .VPHero .image-container {
   overflow: visible;
   display: flex;
@@ -73,12 +73,13 @@
   justify-content: center;
 }
 
-.VPHero .image-container .VPImage {
-  transform: scale(1.5);
+.VPHero .image-src {
+  max-width: 420px;
+  max-height: 560px;
 }
 
 /* 图片悬停效果 */
 .VPHero .image-container .VPImage:hover {
-  transform: scale(1.55);
+  transform: scale(1.03);
   transition: transform 0.3s ease;
 }
