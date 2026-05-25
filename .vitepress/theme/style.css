@@ -1,3 +1,10 @@
+/* Hero 区域撑满首屏，将下方组件推到下一屏 */
+.VPHomeHero {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+}
+
 /* 封面加载动画 */
 .hero-image {
   animation: fadeInScale 0.8s ease-out forwards;
@@ -20,23 +27,7 @@
   }
 }
 
-/* Hero 区域整体动画 */
-.hero {
-  animation: slideUp 0.6s ease-out forwards;
-}
-
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 标题动画 */
+/* Hero 文本区域动画 */
 .hero-title {
   animation: fadeInUp 0.6s ease-out 0.2s forwards;
   opacity: 0;
