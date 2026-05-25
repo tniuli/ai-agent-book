@@ -92,7 +92,7 @@ export default defineConfig({
     ],
 
     footer: {
-      message: '© 2026 汉清. All rights reserved.'
+      message: '© 2026 李铁牛. All rights reserved.'
     },
 
     editLink: {
